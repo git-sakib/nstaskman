@@ -1,18 +1,52 @@
 import { createReducer } from "@reduxjs/toolkit";
+import AuthService from "../../services/AuthService";
 
-const authReducer = createReducer({}, (builder) => {
-    builder.addCase('LOGIN', (state, action) => {
-        // "mutate" the array by calling push()
-        //state.push(action.payload)
+const authReducer = createReducer({user: {
+    data: null, error: null
+}}, (builder) => { builder
+    .addCase('LOGIN', (state, action) => {
+        let _user = AuthService.login(action.payload);
+        console.log(_user);
+        if(_user){
+            return {
+                ...state,
+                user: {
+                    data: _user,
+                    error: null
+                }
+            };
+        } else {
+            return {
+                ...state,
+                user: {
+                    data: null,
+                    error: "Cannot Authorize !"
+                }
+            };
+        }
     })
     .addCase('LOGOUT', (state, action) => {
-        //const todo = state[action.payload.index]
-        // "mutate" the object by overwriting a field
-        //todo.completed = !todo.completed
+        AuthService.logout();
+        return {
+            ...state,
+            user: {
+                data: null,
+                error: null
+            }
+        };       
     })
-    .addCase('REMOVE_TODO', (state, action) => {
-        // Can still return an immutably-updated value if we want to
-        //return state.filter((todo, i) => i !== action.payload.index)
+    .addCase('CHECK', (state, action) => {
+        let _user = AuthService.check();
+        console.log(_user);
+        if(_user){
+            return {
+                ...state,
+                user: {
+                    data: _user,
+                    error: null
+                }
+            };
+        }         
     })
 });
 

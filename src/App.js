@@ -1,32 +1,38 @@
 import './App.css';
-import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useSelector,useDispatch } from "react-redux";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LoginScreen from './screens/LoginScreen';
 import DashboardScreen from './screens/DashboardScreen';
+import TasksScreen from './screens/TasksScreen';
+import MembersScreen from './screens/MembersScreen';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import AuthActions from './state/actions/AuthActions';
 
 function App() {
 
-	const state = useSelector((state) => state);
+	//const state = useSelector((state) => state);
+	const dispatch = useDispatch();
 
-	console.log(state);
+    useEffect(() => {
+        dispatch(AuthActions.check());
+    }, []);
 
 	return (
 		<div className="app">
-
 			<Router>
-				<header className="header">
-					<h2>Header</h2>
-				</header>
-				<main className='main'>
+				<Header />
+				<main className='main  min-h-screen p-6'>
 					<Routes>
-						<Route path='/' element={<DashboardScreen />} />
+						<Route path='/' element={<LoginScreen />} />
 						<Route path='/login' element={<LoginScreen />} />
 						<Route path='/dashboard' element={<DashboardScreen />} />
+						<Route path='/members' element={<MembersScreen />} />
+						<Route path='/tasks' element={<TasksScreen />} />
 					</Routes>
 				</main>
-				<footer className="footer">
-					<h2>Footer</h2>
-				</footer>    				
+				<Footer />    				
 			</Router>
 
 		</div>
