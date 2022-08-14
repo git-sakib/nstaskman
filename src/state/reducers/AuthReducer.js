@@ -1,27 +1,26 @@
 import { createReducer } from "@reduxjs/toolkit";
 import AuthService from "../../services/AuthService";
 
-const authReducer = createReducer({user: {
-    data: null, error: null
-}}, (builder) => { builder
+const authReducer = createReducer({
+    loading: true, 
+    user: null, 
+    error: null
+}, (builder) => { builder
     .addCase('LOGIN', (state, action) => {
         let _user = AuthService.login(action.payload);
-        console.log(_user);
         if(_user){
             return {
                 ...state,
-                user: {
-                    data: _user,
-                    error: null
-                }
+                loading: false,
+                user: _user,
+                error: null
             };
         } else {
             return {
                 ...state,
-                user: {
-                    data: null,
-                    error: "Cannot Authorize !"
-                }
+                loading: false,
+                user: null,
+                error: "Cannot Authorize !"
             };
         }
     })
@@ -29,23 +28,25 @@ const authReducer = createReducer({user: {
         AuthService.logout();
         return {
             ...state,
-            user: {
-                data: null,
-                error: null
-            }
+            loading: false,
+            user: null,
+            error: null
         };       
     })
     .addCase('CHECK', (state, action) => {
         let _user = AuthService.check();
-        console.log(_user);
         if(_user){
             return {
                 ...state,
-                user: {
-                    data: _user,
-                    error: null
-                }
+                loading: false,
+                user: _user,
+                error: null
             };
+        }else {
+            return {
+                ...state,
+                loading: false,
+            };            
         }         
     })
 });

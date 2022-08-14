@@ -6,7 +6,7 @@ const Footer = () => {
 
     return (
         <>
-            {auth.user.data && <footer className="footer">
+            {auth.user && <footer className="footer">
                 <div className="block bg-gray-900 p-6">
                     <div className="text-white mr-6 text-center">
                         <span className="font-semibold text-sm tracking-tight">no copytright, anyone free to copy! - TaskMan</span>
